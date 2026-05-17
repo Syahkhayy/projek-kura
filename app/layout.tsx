@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "KURA",
   description: "Level up your running quest with pixel-art motivation.",
   icons: {
-    icon: "/mascot.png",
+    icon: "/kura-trying.png",
   },
 };
 
