@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   Home Page — Nusantara Village
+   Home Page — Modern Nusantara Village
    ═══════════════════════════════════════ */
 
 .home-main {
@@ -9,82 +9,604 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  /* Prevent horizontal scroll from parallax layers */
+}
 
-  /* Full-bleed background image */
-  background-image:
-    linear-gradient(var(--background-overlay), color-mix(in srgb, var(--background-overlay), black 10%)),
-    url('/homepage.png');
+/* ─── Parallax Background Layer ─── */
+.parallax-bg {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 110%;
+  height: 120%;
+  z-index: 0;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-
-  padding: 2rem;
+  filter: brightness(0.6) contrast(1.1);
+  will-change: transform;
+  /* Optimize GSAP performance */
 }
 
-/* ─── Centred content wrapper ─── */
-.home-content {
+
+/* ─── Modern Glass Card Base ─── */
+.modern-glass-card {
+  background: color-mix(in srgb, var(--card), transparent 10%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--border), transparent 30%);
+  border-radius: 20px;
+  /* Smooth modern corners */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary);
+}
+
+/* ─── Full-Screen Hero Section ─── */
+.home-hero-fullscreen {
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-  width: 100%;
-  max-width: 50rem;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
-/* ─── Card ─── */
-.home-card {
+.home-hero-bg {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 110%;
+  height: 120%;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  will-change: transform;
+}
+
+/* Theme-aware overlay to ensure text contrast in both Light and Dark modes */
+.home-hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--background);
+  opacity: 0.65;
+  z-index: 1;
+}
+
+.home-hero-content-split {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: clamp(2rem, 6vw, 3.5rem);
-  text-align: center;
+  max-width: 1200px;
+  padding: 0 2rem;
+  /* Removed padding-top: 6rem because the header is gone */
+}
+
+@media (max-width: 768px) {
+  .home-hero-content-split {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: 1.5rem;
+    /* Reduced gap on mobile so bottom isn't crowded */
+    padding-bottom: 3rem;
+    /* Add a bit of bottom padding to clear the scroll indicator */
+  }
+}
+
+.home-hero-left {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  align-items: center;
+  text-align: center;
 }
 
-/* ─── Title ─── */
-.home-title {
-  font-size: clamp(2.5rem, 10vw, 4.5rem);
-  font-weight: 900;
-  color: var(--primary);
-  font-family: var(--font-pixel);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  text-shadow: 4px 4px 0px color-mix(in srgb, var(--primary), transparent 75%);
+@media (min-width: 769px) {
+  .home-hero-left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .home-hero-right {
+    margin-top: 5rem;
+  }
 }
 
-/* ─── Subtitle ─── */
-.home-subtitle {
-  font-size: clamp(0.65rem, 2vw, 0.8rem);
-  color: var(--muted-foreground);
-  font-family: var(--font-pixel);
-  letter-spacing: 0.05em;
-  line-height: 1.8;
-}
-
-/* ─── Actions ─── */
-.home-actions {
+.home-hero-right {
+  flex: 1;
   display: flex;
   justify-content: center;
-  padding-top: 0.75rem;
+  align-items: center;
 }
 
-/* ─── CTA Button ─── */
-.start-btn {
-  font-size: 0.85rem;
+
+@keyframes float-sprite {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.home-hero-title {
+  font-size: clamp(2rem, 8vw, 3.8rem);
+  font-weight: 900;
+  color: var(--primary-dark);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 2px 2px 0px color-mix(in srgb, var(--foreground), transparent 80%);
+  text-align: center;
+}
+
+.home-hero-subtitle {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  color: color-mix(in srgb, var(--foreground), transparent 15%);
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+  max-width: 32rem;
+  text-align: center;
+}
+
+@media (min-width: 769px) {
+
+  .home-hero-title,
+  .home-hero-subtitle {
+    text-align: left;
+  }
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* ─── Scroll Indicator ─── */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: color-mix(in srgb, var(--foreground), transparent 30%);
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+}
+
+.scroll-text {
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
-  padding: 1rem 2.5rem;
+  text-transform: uppercase;
+}
+
+.scroll-arrow {
+  font-size: 1.5rem;
+  animation: bounce-arrow 2s infinite;
+}
+
+@keyframes bounce-arrow {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* ─── Lower Content Wrapper ─── */
+.home-content-lower {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rem;
+  /* Increased for better breathing room */
+  width: 100%;
+  max-width: 65rem;
+  padding: 6rem 1.5rem;
+  /* Increased top/bottom padding */
+  z-index: 1;
+}
+
+/* ─── Base Section ─── */
+.home-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  /* Increased spacing between title and content */
+  align-items: center;
+}
+
+.home-section-title {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  font-weight: 800;
+  color: var(--primary);
+  text-shadow: 2px 2px 0px color-mix(in srgb, var(--primary), transparent 75%);
+  text-align: center;
+  position: relative;
+  margin-bottom: 4rem;
+}
+
+.home-section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ─── How It Works (Grid) ─── */
+.how-flow-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .how-flow-grid {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: center;
+  }
+}
+
+.how-step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  gap: 1rem;
+}
+
+.how-step-num {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent-foreground);
+  background: var(--accent);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent), transparent 50%);
+}
+
+.how-step-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.how-step-desc {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.how-arrow-desktop {
+  font-size: 2rem;
+  color: color-mix(in srgb, var(--primary), transparent 50%);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .how-arrow-desktop {
+    display: block;
+  }
+}
+
+/* ─── Philosophy (Grid) ─── */
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.philosophy-item {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-left: 6px solid var(--accent);
+}
+
+.philosophy-item-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.philosophy-item-desc {
+  font-size: 0.95rem;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+}
+
+/* ─── Story Hook (Cinematic) ─── */
+.story-wrapper {
+  width: 100%;
+  max-width: 60rem;
+  padding: 4rem 2rem;
+}
+
+.story-title::after {
+  display: none;
+}
+
+.story-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.story-text {
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  color: color-mix(in srgb, var(--foreground), transparent 20%);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.story-text-highlight {
+  font-weight: 800;
+  font-style: normal;
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  margin-top: 1rem;
+}
+
+.glow-text {
+  color: var(--destructive-border);
+  text-shadow: 0 0 15px color-mix(in srgb, var(--destructive), transparent 30%);
+}
+
+/* ─── Final CTA ─── */
+.home-final-wrapper {
+  padding: 4rem 2rem;
+}
+
+.home-final-title {
+  font-size: clamp(1.8rem, 6vw, 3rem);
+  font-weight: 900;
+  color: var(--primary);
+  text-shadow: 2px 2px 0px color-mix(in srgb, var(--primary), transparent 75%);
+  text-align: center;
+}
+
+.home-final-subtitle {
+  font-size: clamp(0.9rem, 3vw, 1.2rem);
+  color: var(--muted-foreground);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ─── Actions & Buttons ─── */
+.home-actions,
+.footer-actions {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.footer-actions {
+  justify-content: center;
+}
+
+.start-btn {
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  letter-spacing: 0.1em;
+  padding: 1.2rem 2.5rem;
+  width: 100%;
+  max-width: 24rem;
+  text-align: center;
+}
+
+.pulse-glow {
+  animation: button-pulse 3s infinite;
+}
+
+@keyframes button-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--primary), transparent 50%);
+  }
+
+  70% {
+    box-shadow: 0 0 0 15px transparent;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
 }
 
 /* ─── Footer ─── */
 .home-footer {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 0;
-  right: 0;
+  width: 100vw;
+  margin-top: 2rem;
+  padding: 1rem 2rem;
   text-align: center;
   color: color-mix(in srgb, var(--foreground), transparent 45%);
   font-family: var(--font-pixel);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--card), transparent 30%);
+}
+
+/* ─── Utilities ─── */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.-z-10 {
+  z-index: -10;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}
+
+.opacity-30 {
+  opacity: 0.3;
+}
+
+.mix-blend-screen {
+  mix-blend-mode: screen;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+/* ─── Custom additions for the new layout ─── */
+.home-hero-sprite-unwrapped {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-hero-sprite-large {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  animation: float-sprite 4s ease-in-out infinite;
+}
+
+@media (min-width: 769px) {
+  .home-hero-sprite-large {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+.borderless-glass-card {
+  background: color-mix(in srgb, var(--card), transparent 15%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Kura Dialogue Bubble ─── */
+.home-hero-sprite-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.kura-dialogue {
+  background: color-mix(in srgb, var(--card), transparent 10%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  color: var(--foreground);
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  animation: float-dialogue 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+  line-height: 1.5;
+}
+
+/* Speech bubble tail */
+.kura-dialogue::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0;
+  border-style: solid;
+  border-color: var(--primary) transparent transparent transparent;
+  display: block;
+  width: 0;
+}
+
+@keyframes float-dialogue {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
