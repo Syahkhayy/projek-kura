@@ -29,7 +29,6 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
 
 
   useEffect(() => {
-    setIsSuccess(false); // Reset success state on refresh
     checkTodayLog();
   }, [refreshKey]);
 
@@ -51,7 +50,8 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
     if (data && data.length > 0) {
       setHasLoggedToday(true);
     } else {
-      setHasLoggedToday(false); // Make sure to reset if no log found
+      setHasLoggedToday(false);
+      setIsSuccess(false); // Reset success state if the run was deleted
     }
   };
 
@@ -104,7 +104,7 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
 
       const { error: profileError } = await supabase
         .from("profiles")
-        .update({ 
+        .update({
           kura_endurance: newEndurance,
           streak: newStreak
         })
@@ -125,7 +125,7 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
 
   if (hasLoggedToday && !isSuccess) {
     return (
-      <div className="log-run-card logged-today">
+      <div className="log-run-card pixel-card logged-today">
         <p className="log-message">Kura is exhausted from today's run. Come back tomorrow!</p>
       </div>
     );
@@ -136,7 +136,7 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
     const message = mood.successMessages[Math.floor(Math.random() * mood.successMessages.length)];
 
     return (
-      <div className="log-run-card success">
+      <div className="log-run-card pixel-card success">
         <p className="log-message">{message}</p>
         <span className="log-submessage">Kura's endurance improved!</span>
       </div>
