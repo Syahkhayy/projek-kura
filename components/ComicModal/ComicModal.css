@@ -275,7 +275,6 @@
 .comic-nav-btn:hover:not(:disabled) {
   opacity: 1;
   color: var(--primary);
-  transform: scale(1.1);
 }
 
 .comic-nav-btn:disabled {

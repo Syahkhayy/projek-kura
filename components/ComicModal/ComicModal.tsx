@@ -26,38 +26,8 @@ const comicPages = [
     imageSrc: "/comic-placeholder.png",
     imageAlt: "Navigation 2 coming soon page",
     body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.",
-  },
-  {
-    imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 3 coming soon page",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis consectetur purus sit amet fermentum. Curabitur blandit tempus porttitor. Donec sed odio dui.",
-  },
-  {
-    imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 4 coming soon page",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lacinia bibendum nulla sed consectetur. Vestibulum id ligula porta felis euismod semper.",
-  },
-  {
-    imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 5 coming soon page",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Maecenas faucibus mollis interdum.",
-  },
-  {
-    imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 6 coming soon page",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra augue.",
-  },
-  {
-    imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 7 coming soon page",
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porta sem malesuada magna mollis euismod. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.",
-  },
+      "WORK IN PROGRESS, SORRY FOR THE INCOVENIENCE",
+  }
 ];
 
 export default function ComicModal({ isOpen, onClose }: ComicModalProps) {
@@ -118,9 +88,8 @@ export default function ComicModal({ isOpen, onClose }: ComicModalProps) {
           <div className="comic-page-wrapper">
             <div className="comic-spread">
               <section
-                className={`comic-spread-page comic-spread-image-page ${
-                  isFlipping && flipDir === "prev" ? "flipping-page-prev" : ""
-                }`}
+                className={`comic-spread-page comic-spread-image-page ${isFlipping && flipDir === "prev" ? "flipping-page-prev" : ""
+                  }`}
               >
                 <Image
                   src={currentComic.imageSrc}
@@ -133,9 +102,8 @@ export default function ComicModal({ isOpen, onClose }: ComicModalProps) {
               </section>
 
               <section
-                className={`comic-spread-page comic-spread-story-page ${
-                  isFlipping && flipDir === "next" ? "flipping-page-next" : ""
-                }`}
+                className={`comic-spread-page comic-spread-story-page ${isFlipping && flipDir === "next" ? "flipping-page-next" : ""
+                  }`}
               >
                 <p>{currentComic.body}</p>
               </section>
@@ -153,7 +121,7 @@ export default function ComicModal({ isOpen, onClose }: ComicModalProps) {
 
             <div className="comic-meta">
               <span className="comic-page-num">
-                NAVIGATION {step} / {comicPages.length}
+                PAGE {step}
               </span>
               <div className="comic-dots">
                 {comicPages.map((_, i) => (
