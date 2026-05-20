@@ -30,7 +30,7 @@ const comicPages = [
       "And for the first time in a long while the village fell silent.",
   },
   {
-    imageSrc: "/comic-placeholder.png",
+    imageSrc: "/comic/comic-placeholder.png",
     imageAlt: "coming soon page",
     body:
       "WORK IN PROGRESS, SORRY FOR THE INCOVENIENCE",
