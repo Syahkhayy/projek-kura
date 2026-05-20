@@ -1,4 +1,4 @@
-export const APP_VERSION = "v0.0.5 Pre-Alpha";
+export const APP_VERSION = "v0.1.1 Pre-Alpha";
 export const FOOTER_TEXT = "Built for Champions";
 
 // ─── Endurance System Constants ───

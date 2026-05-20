@@ -15,7 +15,7 @@ const pressStart2P = Press_Start_2P({
 });
 
 export const metadata: Metadata = {
-  title: "KURA",
+  title: "Projek : Kura",
   description: "Level up your running quest with pixel-art motivation.",
   icons: {
     icon: "/kura-trying.png",
