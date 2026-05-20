@@ -1,0 +1,150 @@
+.badge-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem 0;
+  gap: 0.75rem;
+  /* Centered, full-width, no background or border as requested */
+}
+
+.badge-section-title {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  letter-spacing: 0.2em;
+  margin: 0;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+.badge-item-container {
+  position: relative;
+  display: inline-block;
+}
+
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.badge-image-wrapper {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.badge-image {
+  image-rendering: pixelated;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  object-fit: contain;
+}
+
+/* Hover effects */
+.badge-item:hover {
+  transform: translateY(-4px);
+}
+
+.badge-item:hover .badge-image {
+  transform: scale(1.15) rotate(6deg);
+}
+
+.badge-name {
+  font-size: 0.65rem;
+  color: var(--foreground);
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+/* Lore Tooltip Stylings */
+.badge-tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  width: 280px;
+  padding: 1rem;
+  background: var(--card);
+  border: 4px solid var(--primary-border);
+  color: var(--foreground);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 100;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+}
+
+/* Pointer arrow styling using custom border triangles */
+.badge-tooltip::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--primary-border) transparent transparent transparent;
+}
+
+.badge-tooltip::after {
+  content: "";
+  position: absolute;
+  top: calc(100% - 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--card) transparent transparent transparent;
+}
+
+/* Hover reveal triggers */
+.badge-item-container:hover .badge-tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tooltip-title {
+  font-size: 0.85rem;
+  color: var(--primary);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.tooltip-lore {
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--foreground);
+  margin: 0;
+  font-style: italic;
+}
+
+.tooltip-date {
+  font-size: 0.55rem;
+  color: var(--muted-foreground);
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+}

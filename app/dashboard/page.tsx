@@ -16,6 +16,8 @@ import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
 import MilestoneTracker from "@/components/MilestoneTracker/MilestoneTracker";
 import VictoryModal from "@/components/VictoryModal/VictoryModal";
 import { getUnlockedMilestones, Milestone } from "@/lib/milestones";
+import { fetchUserBadges, syncUserBadges, Badge } from "@/lib/badges";
+import BadgeSection from "@/components/BadgeSection/BadgeSection";
 import "./stylesheet.css";
 
 export default function DashboardPage() {
@@ -33,6 +35,7 @@ export default function DashboardPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [unlockedMilestoneToShow, setUnlockedMilestoneToShow] = useState<Milestone | null>(null);
   const [showVictoryModal, setShowVictoryModal] = useState(false);
+  const [earnedBadges, setEarnedBadges] = useState<Badge[]>([]);
 
   const checkNewMilestones = (endurance: number, currentUserId: string) => {
     const unlocked = getUnlockedMilestones(endurance);
@@ -165,6 +168,11 @@ export default function DashboardPage() {
       setCurrentEndurance(finalEndurance);
       setCurrentStreak(finalStreak);
       checkNewMilestones(finalEndurance, user.id);
+
+      // Fetch badges and auto-sync (award/revoke) based on current endurance
+      const userBadges = await fetchUserBadges(user.id);
+      const syncedBadges = await syncUserBadges(user.id, finalEndurance, userBadges);
+      setEarnedBadges(syncedBadges);
     } catch (err) {
       console.error("Error fetching user data:", err);
     } finally {
@@ -179,6 +187,12 @@ export default function DashboardPage() {
 
     if (userId) {
       checkNewMilestones(newEndurance, userId);
+
+      // Sync badges — awards if newly eligible, revokes if no longer eligible
+      (async () => {
+        const syncedBadges = await syncUserBadges(userId, newEndurance, earnedBadges);
+        setEarnedBadges(syncedBadges);
+      })();
     }
   };
 
@@ -408,6 +422,8 @@ export default function DashboardPage() {
           </section>
         </div>
 
+        <BadgeSection earnedBadges={earnedBadges} />
+
         {/* ─── Training History (Full Width) ─── */}
         <RunList
           refreshKey={refreshKey}
@@ -416,6 +432,12 @@ export default function DashboardPage() {
             setRefreshKey(prev => prev + 1);
             if (userId) {
               syncSeenMilestones(newEndurance, userId);
+
+              // Sync badges — handles revoking if endurance drops below threshold after run deletion
+              (async () => {
+                const syncedBadges = await syncUserBadges(userId, newEndurance, earnedBadges);
+                setEarnedBadges(syncedBadges);
+              })();
             }
           }}
         />
