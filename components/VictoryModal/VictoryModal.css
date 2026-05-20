@@ -1,0 +1,198 @@
+.victory-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(6px) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 9999 !important;
+  padding: 1rem;
+}
+
+.victory-modal-content {
+  background: var(--card);
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: modal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.7);
+  border: 4px solid var(--accent);
+}
+
+.victory-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 4px solid var(--muted);
+  padding-bottom: 0.75rem;
+  flex-shrink: 0;
+}
+
+.victory-modal-header h2 {
+  font-size: 1.1rem;
+  color: var(--accent);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.victory-close-btn {
+  background: none;
+  border: none;
+  color: var(--muted-foreground);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.victory-close-btn:hover {
+  color: var(--destructive);
+}
+
+.victory-modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+}
+
+.victory-partner-showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.victory-avatar-frame {
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, var(--muted) 40%, color-mix(in srgb, var(--accent), transparent 85%) 100%);
+  border: 4px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+  padding: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  position: relative;
+}
+
+/* Glowing background effect for the milestone unlock */
+.victory-avatar-frame::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border: 2px dashed var(--accent);
+  opacity: 0.6;
+  animation: rotate-dashed 20s infinite linear;
+}
+
+@keyframes rotate-dashed {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.victory-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite ease-in-out;
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.victory-celebration-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.victory-announcement {
+  font-family: var(--font-pixel);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.victory-announcement strong {
+  color: var(--accent);
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.15);
+}
+
+.victory-partner-details {
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  margin: 0;
+  font-style: italic;
+  background: var(--muted);
+  border: 2px solid var(--border);
+  padding: 0.75rem 1rem;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.victory-modal-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.victory-action-btn {
+  width: 100%;
+  padding: 1.1rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .victory-modal-content {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+
+  .victory-avatar-frame {
+    width: 130px;
+    height: 130px;
+  }
+
+  .victory-announcement {
+    font-size: 0.9rem;
+  }
+
+  .victory-partner-details {
+    font-size: 0.65rem;
+    max-width: 100%;
+  }
+}
