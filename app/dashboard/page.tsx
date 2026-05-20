@@ -13,6 +13,11 @@ import OnboardingModal from "@/components/OnboardingModal/OnboardingModal";
 import ComicModal from "@/components/ComicModal/ComicModal";
 import LoreSection from "@/components/LoreSection/LoreSection";
 import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
+import MilestoneTracker from "@/components/MilestoneTracker/MilestoneTracker";
+import VictoryModal from "@/components/VictoryModal/VictoryModal";
+import { getUnlockedMilestones, Milestone } from "@/lib/milestones";
+import { fetchUserBadges, syncUserBadges, Badge } from "@/lib/badges";
+import BadgeSection from "@/components/BadgeSection/BadgeSection";
 import "./stylesheet.css";
 
 export default function DashboardPage() {
@@ -27,6 +32,52 @@ export default function DashboardPage() {
   const [showComic, setShowComic] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [unlockedMilestoneToShow, setUnlockedMilestoneToShow] = useState<Milestone | null>(null);
+  const [showVictoryModal, setShowVictoryModal] = useState(false);
+  const [earnedBadges, setEarnedBadges] = useState<Badge[]>([]);
+
+  const checkNewMilestones = (endurance: number, currentUserId: string) => {
+    const unlocked = getUnlockedMilestones(endurance);
+    if (unlocked.length === 0) return;
+
+    const storageKey = `kura_seen_milestones_${currentUserId}`;
+    const seenJson = localStorage.getItem(storageKey);
+    const seenIds: string[] = seenJson ? JSON.parse(seenJson) : [];
+
+    const unseen = unlocked.filter((m) => !seenIds.includes(m.id));
+
+    if (unseen.length > 0) {
+      // Pick the highest requiredEndurance one that is unseen
+      const highestUnseen = unseen.reduce((prev, curr) =>
+        prev.requiredEndurance > curr.requiredEndurance ? prev : curr
+      );
+
+      setUnlockedMilestoneToShow(highestUnseen);
+      setShowVictoryModal(true);
+
+      // Save all currently unlocked to seen list
+      const updatedSeen = Array.from(new Set([...seenIds, ...unlocked.map((m) => m.id)]));
+      localStorage.setItem(storageKey, JSON.stringify(updatedSeen));
+    }
+  };
+
+  const syncSeenMilestones = (endurance: number, currentUserId: string) => {
+    const storageKey = `kura_seen_milestones_${currentUserId}`;
+    const seenJson = localStorage.getItem(storageKey);
+    if (!seenJson) return;
+
+    try {
+      const seenIds: string[] = JSON.parse(seenJson);
+      const unlocked = getUnlockedMilestones(endurance);
+      const unlockedIds = unlocked.map((m) => m.id);
+      // Keep only seen IDs that are still unlocked
+      const updatedSeen = seenIds.filter((id) => unlockedIds.includes(id));
+      localStorage.setItem(storageKey, JSON.stringify(updatedSeen));
+    } catch (e) {
+      console.error("Error syncing seen milestones:", e);
+    }
+  };
 
   useEffect(() => {
     fetchUserData();
@@ -39,6 +90,8 @@ export default function DashboardPage() {
         router.push("/login");
         return;
       }
+
+      setUserId(user.id);
 
       // 1. Fetch current endurance, streak, and onboarding status from profile
       let { data: profile, error: profileError } = await supabase
@@ -114,6 +167,12 @@ export default function DashboardPage() {
 
       setCurrentEndurance(finalEndurance);
       setCurrentStreak(finalStreak);
+      checkNewMilestones(finalEndurance, user.id);
+
+      // Fetch badges and auto-sync (award/revoke) based on current endurance
+      const userBadges = await fetchUserBadges(user.id);
+      const syncedBadges = await syncUserBadges(user.id, finalEndurance, userBadges);
+      setEarnedBadges(syncedBadges);
     } catch (err) {
       console.error("Error fetching user data:", err);
     } finally {
@@ -125,6 +184,16 @@ export default function DashboardPage() {
     setCurrentEndurance(newEndurance);
     if (newStreak !== undefined) setCurrentStreak(newStreak);
     setRefreshKey(prev => prev + 1); // Trigger RunList refresh
+
+    if (userId) {
+      checkNewMilestones(newEndurance, userId);
+
+      // Sync badges — awards if newly eligible, revokes if no longer eligible
+      (async () => {
+        const syncedBadges = await syncUserBadges(userId, newEndurance, earnedBadges);
+        setEarnedBadges(syncedBadges);
+      })();
+    }
   };
 
   const handleLogout = async (silent = false) => {
@@ -313,30 +382,34 @@ export default function DashboardPage() {
         )}
 
         <div className="dashboard-content">
-          {/* ─── Left: Progress ─── */}
-          <section className="endurance-card pixel-card">
-            <div className="endurance-label">KURA ENDURANCE</div>
-            <div className="endurance-main-display">
-              <div className="endurance-value">{enduranceDisplay}</div>
-              <div className="endurance-unit">km</div>
-            </div>
+          {/* ─── Left: Progress & Milestones ─── */}
+          <div className="progress-column">
+            <section className="endurance-card pixel-card">
+              <div className="endurance-label">KURA ENDURANCE</div>
+              <div className="endurance-main-display">
+                <div className="endurance-value">{enduranceDisplay}</div>
+                <div className="endurance-unit">km</div>
+              </div>
 
-            {/* ─── Progress Bar ─── */}
-            <div className="progress-container">
-              <div className="progress-labels">
-                <span className="progress-label-slow">Weak</span>
-                <span className="progress-label-fast">Strong</span>
+              {/* ─── Progress Bar ─── */}
+              <div className="progress-container">
+                <div className="progress-labels">
+                  <span className="progress-label-slow">Weak</span>
+                  <span className="progress-label-fast">Strong</span>
+                </div>
+                <div className="progress-track">
+                  <div
+                    className="progress-fill"
+                    style={{ "--progress": `${progress}%` } as React.CSSProperties}
+                  ></div>
+                </div>
+                <div className="progress-percent">{progress}%</div>
+                <div className="endurance-disclaimer">THIS IS KURA'S ENDURANCE, NOT YOURS</div>
               </div>
-              <div className="progress-track">
-                <div
-                  className="progress-fill"
-                  style={{ "--progress": `${progress}%` } as React.CSSProperties}
-                ></div>
-              </div>
-              <div className="progress-percent">{progress}%</div>
-              <div className="endurance-disclaimer">THIS IS KURA'S ENDURANCE, NOT YOURS</div>
-            </div>
-          </section>
+            </section>
+            
+            <MilestoneTracker currentEndurance={currentEndurance} />
+          </div>
 
           {/* ─── Right: Actions ─── */}
           <section className="action-area">
@@ -349,12 +422,23 @@ export default function DashboardPage() {
           </section>
         </div>
 
+        <BadgeSection earnedBadges={earnedBadges} />
+
         {/* ─── Training History (Full Width) ─── */}
         <RunList
           refreshKey={refreshKey}
           onEnduranceUpdate={(newEndurance) => {
             setCurrentEndurance(newEndurance);
             setRefreshKey(prev => prev + 1);
+            if (userId) {
+              syncSeenMilestones(newEndurance, userId);
+
+              // Sync badges — handles revoking if endurance drops below threshold after run deletion
+              (async () => {
+                const syncedBadges = await syncUserBadges(userId, newEndurance, earnedBadges);
+                setEarnedBadges(syncedBadges);
+              })();
+            }
           }}
         />
 
@@ -369,6 +453,19 @@ export default function DashboardPage() {
           isOpen={showOnboarding}
           onClose={handleCloseOnboarding}
         />
+
+        {unlockedMilestoneToShow && (
+          <VictoryModal
+            isOpen={showVictoryModal}
+            onClose={() => {
+              setShowVictoryModal(false);
+              setUnlockedMilestoneToShow(null);
+            }}
+            partnerName={unlockedMilestoneToShow.name}
+            partnerDescription={unlockedMilestoneToShow.description}
+            partnerImageSrc={unlockedMilestoneToShow.imageSrc}
+          />
+        )}
       </div>
     </div>
   );

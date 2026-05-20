@@ -11,7 +11,7 @@ interface ComicModalProps {
 
 const comicPages = [
   {
-    imageSrc: "/comic1.png",
+    imageSrc: "/comic/comic1.png",
     imageAlt: "Navigation 1 comic page",
     body:
       "The village was already alive with movement under the warm morning sun. " +
@@ -23,8 +23,15 @@ const comicPages = [
       "Tomorrow.",
   },
   {
+    imageSrc: "/comic/comic2.png",
+    imageAlt: "Navigation 2 comic page",
+    body: "Then, one morning, everything changed. \n\n" +
+      " The ground trembled beneath unfamiliar footsteps as the army of the AR Nation (Amazing Rabbit) entered the village without fear. \n\n" +
+      "And for the first time in a long while the village fell silent.",
+  },
+  {
     imageSrc: "/comic-placeholder.png",
-    imageAlt: "Navigation 2 coming soon page",
+    imageAlt: "coming soon page",
     body:
       "WORK IN PROGRESS, SORRY FOR THE INCOVENIENCE",
   }
