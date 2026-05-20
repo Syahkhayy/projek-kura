@@ -29,7 +29,7 @@ export default function LogRun({ currentEndurance, currentStreak, onLogSuccess, 
 
 
   useEffect(() => {
-    //checkTodayLog();
+    checkTodayLog();
   }, [refreshKey]);
 
 
