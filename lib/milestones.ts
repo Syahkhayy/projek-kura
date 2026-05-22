@@ -20,28 +20,28 @@ export const MILESTONES: Milestone[] = [
     name: "Slime",
     requiredEndurance: 2.0,
     description: "A tiny, friendly slime near the village river. Kura can now train alongside it.",
-    imageSrc: "/slime.png",
+    imageSrc: "/training-partner/slime.png",
   },
   {
     id: "village_kid",
     name: "Village Kid",
     requiredEndurance: 3.0,
     description: "A playful kid who loves tag. He can barely keep up with Kura now.",
-    imageSrc: "/village_kid.png",
+    imageSrc: "/training-partner/village_kid.png",
   },
   {
     id: "rabbit_scout",
     name: "Rabbit Scout",
     requiredEndurance: 5.0,
     description: "A swift forest scout. Kura can now match his steady pace.",
-    imageSrc: "/rabbit_scout.png",
+    imageSrc: "/training-partner/rabbit_scout.png",
   },
   {
     id: "forest_runner",
     name: "Forest Runner",
     requiredEndurance: 8.0,
     description: "A seasoned guardian of the Balak Forest. Kura is finally strong enough to train by their side.",
-    imageSrc: "/forest_runner.png",
+    imageSrc: "/training-partner/forest_runner.png",
   },
 ];
 

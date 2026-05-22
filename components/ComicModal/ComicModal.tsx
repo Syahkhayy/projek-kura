@@ -30,6 +30,14 @@ const comicPages = [
       "And for the first time in a long while the village fell silent.",
   },
   {
+    imageSrc: "/comic/comic3.png",
+    imageAlt: "Navigation 3 comic page",
+    body: "The villagers stood frozen in silence after the AR army’s arrival, their fear slowly turning into desperation. One by one, their eyes drifted across the crowd, searching for someone who could stand forward. But no one did. \n\n" +
+      "'Bring me your slowest runner!' the general, AR. Nab shouted. \n\n" +
+      "Eventually, those uncertain glances settled on Kura. He looked up, confused, as the weight of every stare in the village pressed onto him at once. \n\n" +
+      "No one said it out loud at first. They didn’t have to. In that moment, the slowest person in the village had already become their only hope.",
+  },
+  {
     imageSrc: "/comic/comic-placeholder.png",
     imageAlt: "coming soon page",
     body:

@@ -235,6 +235,50 @@
   color: var(--accent);
 }
 
+/* ─── Minecraft-style tips ─── */
+.login-tip {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.35rem 0.5rem;
+  padding: 0 2rem;
+  max-width: 36rem;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  line-height: 1.6;
+  pointer-events: none;
+}
+
+.login-tip-label {
+  color: color-mix(in srgb, var(--accent), transparent 25%);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.login-tip-text {
+  color: var(--foreground);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+
+.login-tip-text.is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-tip-text {
+    transition: none;
+  }
+}
+
 /* ─── Footer ─── */
 .login-footer {
   position: absolute;
@@ -264,5 +308,11 @@
   .login-card {
     padding: 2rem 1.25rem;
     border-width: 3px;
+  }
+
+  .login-tip {
+    bottom: 3rem;
+    padding: 0 1.25rem;
+    font-size: 0.55rem;
   }
 }

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { APP_VERSION, FOOTER_TEXT } from "@/lib/constants";
+import LoginTip from "@/components/LoginTip/LoginTip";
 import "./stylesheet.css";
 
 export default function LoginPage() {
@@ -131,6 +132,8 @@ export default function LoginPage() {
           </span>
         </p>
       </div>
+
+      <LoginTip />
 
       <footer className="login-footer">
         {APP_VERSION} | {FOOTER_TEXT}
